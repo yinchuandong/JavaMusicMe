@@ -1,0 +1,14 @@
+#Fat Jar Configuration File
+#Wed Jul 16 09:52:27 CST 2014
+onejar.license.required=true
+manifest.classpath=
+manifest.removesigners=true
+onejar.checkbox=false
+jarname=JavaMusicMe_fat.jar
+manifest.mergeall=true
+manifest.mainclass=Ui.IndexFrame
+manifest.file=<createnew>
+jarname.isextern=false
+onejar.expand=
+excludes=
+includes=
