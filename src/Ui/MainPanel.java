@@ -270,8 +270,9 @@ public class MainPanel extends JLayeredPane {
 					for (File file : files) {
 						String title = file.getName();
 						title = title.substring(0, title.lastIndexOf("."));
+						String cover = "./cache/cover/" + title + ".jpg";
 						String path = file.getPath();
-						PlayListItem item = new PlayListItem(title, null, path, null, true);
+						PlayListItem item = new PlayListItem(title, null, path, cover, true);
 						playList.append(item);
 					}
 				}
