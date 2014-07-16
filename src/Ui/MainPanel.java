@@ -4,6 +4,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -297,25 +298,34 @@ public class MainPanel extends JLayeredPane {
 	 * 实际搜索的事件
 	 */
 	private void doSearch(){
-		String key = textField.getText();
-		try {
-			JSONArray resultJson = HttpUtil.get("http://www.xiami.com/web/search-songs?_xiamitoken=452ee4737d91d56cea00cb5a38860058&key=" + key);
-			searchList.clear();
-			for(int i=0; i<resultJson.size(); i++){
-				JSONObject obj = resultJson.getJSONObject(i);
-				String title = obj.getString("title");
-				String author = obj.getString("author");
-				String path = obj.getString("src");
-				String cover = obj.getString("cover");
-				PlayListItem playItem = new PlayListItem(title, author, path, cover, false);
-				searchList.append(playItem);
-			}
-			searchPanel.setVisible(true);
-		} catch (ClientProtocolException e1) {
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			e1.printStackTrace();
+		final String key = textField.getText();
+		if (key == null || key.equals("")) {
+			JOptionPane.showMessageDialog(this, "请输入歌曲名或歌手");
+			return ;
 		}
+		new Thread(){
+			@Override
+			public void run(){
+				try {
+					JSONArray resultJson = HttpUtil.get("http://www.xiami.com/web/search-songs?_xiamitoken=452ee4737d91d56cea00cb5a38860058&key=" + key);
+					searchList.clear();
+					for(int i=0; i<resultJson.size(); i++){
+						JSONObject obj = resultJson.getJSONObject(i);
+						String title = obj.getString("title");
+						String author = obj.getString("author");
+						String path = obj.getString("src");
+						String cover = obj.getString("cover");
+						PlayListItem playItem = new PlayListItem(title, author, path, cover, false);
+						searchList.append(playItem);
+					}
+					searchPanel.setVisible(true);
+				} catch (ClientProtocolException e1) {
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		}.start();
 	}
 	
 	public PlayList getPlayList(){

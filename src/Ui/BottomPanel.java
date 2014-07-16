@@ -148,9 +148,14 @@ public class BottomPanel extends JPanel {
 					return;
 				}
 				if (playService.isInterrupt() || !playService.isAlive()) {
+					int index = playList.getSelectedIndex();
+					index = index < 0 ? 0 : index;
+					playService.setPlayList(playList);
+					playService.startPlay(index);
 					playService.start();
+				}else{
+					playService.pause();
 				}
-				playService.pause();
 				if (isPaused) {
 					isPaused = false;
 					ImageIcon icon = new ImageIcon("img/pause.png");
@@ -331,7 +336,7 @@ public class BottomPanel extends JPanel {
 					progressSlider.setValue(curSec);
 					Thread.sleep(1000);
 				} catch (Exception e) {
-					e.printStackTrace();
+//					e.printStackTrace();
 				}
 			}
 		}
