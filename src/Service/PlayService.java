@@ -59,7 +59,8 @@ public class PlayService extends Thread{
 	 */
 	public synchronized void playNext(){
 		this.curIndex ++;
-		curIndex %= playList.getCount();
+		this.curIndex %= playList.getCount();
+		this.isCustomSelected = true;
 		playList.setCurIndex(curIndex);
 		player.stop();
 	}
@@ -69,6 +70,7 @@ public class PlayService extends Thread{
 	 */
 	public synchronized void playPre(){
 		this.curIndex = (this.curIndex - 1 < 0) ? 0 : (this.curIndex - 1);
+		this.isCustomSelected = true;
 		playList.setCurIndex(curIndex);
 		player.stop();
 	}
@@ -131,7 +133,9 @@ public class PlayService extends Thread{
 			} finally{
 				player.close();
 				if (!isCustomSelected) {
-					this.playNext();
+					this.curIndex ++;
+					this.curIndex %= playList.getCount();
+					playList.setCurIndex(curIndex);
 				}else{
 					isCustomSelected = false;
 				}
